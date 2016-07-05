@@ -77,7 +77,7 @@ if ($action == "loeschen") {
   $preis = mysqli_result($result,0,"preis");
 
 ?>
-
+<body>
   <table>
     <form action=<?php echo $PHP_SELF; ?> method=post>
     <input type=hidden name=action value="save">
@@ -134,9 +134,13 @@ if ($action == "loeschen") {
       $nr = mysqli_result($result,$i,"nr");
       $titel = mysqli_result($result,$i,"titel");
       $text = mysqli_result($result,$i,"text");
+      $bild = mysqli_result($result,$i,"bild");
+      $von = mysqli_result($result,$i,"von");
+      $bis = mysqli_result($result,$i,"bis");
+
 //      echo "<li> $titel - $text <A href=\"$PHP_SELF?nr=$nr&action=update\">Update</A>";
 //      echo "- <a href=\"$PHP_SELF?nr=$nr&action=loeschen\">L�schen</a></li>";
-      echo '<table><tr><td width="160">'.$titel.'</td><td width="360">' .$text. '</td><td width="100"> <A href=\"$PHP_SELF?nr=$nr&action=update\">Update</A></td><td width="100"><a href=\"$PHP_SELF?nr=$nr&action=loeschen\">L&oumlschen</a></td></tr></table>';
+      echo '<table><tr><td width="120">'.$von.' <br>'.$bis.'</td><td width="160">'.$titel.'</td><td width="360">' .$text. '</td><td >  <img width="300px" height="150px" src="../images/lebenslauf/'.$bild.'" /></td> <td width="100"><A href=\"$PHP_SELF?nr=$nr&action=update\">Update</A></td><td width="100"><a href=\"$PHP_SELF?nr=$nr&action=loeschen\">L&oumlschen</a></td></tr></table>';
     }
   } else echo "<li>Es gibt keine Datensätze in der Datenbank<p>";
   echo "</ol>";
@@ -150,3 +154,4 @@ echo "<p><a href=$PHP_SELF>Zur Startseite</a>";
 echo " - <a href=$PHP_SELF?action=formneu>Neuen Artikel einf&uumlgen</a>";
 
 ?>
+</body>

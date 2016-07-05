@@ -51,7 +51,7 @@ mysqli_select_db($conn_id, $database);
     <title>Eliane - Lebenslauf</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
-    <link href="css/tooplate_style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/tooplate_style.css" rel="stylesheet" type="text/css" />
 
   </head>
   <body>
@@ -100,16 +100,20 @@ mysqli_select_db($conn_id, $database);
 				<br> -  <br>
 				<?php echo date("d.m.Y", $bis) ?>
 				</div>
+
+
         <h2>
 				<?php
         //echo htmlentities(
         echo $titel
         //, ENT_COMPAT, 'ISO-8859-1'); ?>
         </h2>
-        <div class="image_wrapper image_fl"><span></span>
 
-				<?php echo '<img src="images/lebenslauf/'.$bild.'" />'; ?>
+
+        <div class="image_wrapper image_fl"><span></span>
+				<?php echo '<img src="../images/lebenslauf/'.$bild.'" /> '; ?>
 				</div>
+
         <p>
                 <?php
                 echo htmlentities($text, null, 'ISO-8859-1');
@@ -134,7 +138,6 @@ mysqli_select_db($conn_id, $database);
           <?php echo htmlentities($copyright);?>
         <div class="cleaner"></div>
       </div>
-
 </div> <!-- end of wrapper -->
 
 </body>
