@@ -5,8 +5,10 @@ header("Content-Type: text/html; charset=ISO-8859-1");
 
 GLOBAL $meldung;
 $titel=$_REQUEST['titel'];
-$text=$_REQUEST['inhalt'];
-$preis=$_REQUEST['preis'];
+$text=$_REQUEST['text'];
+$bild=$_REQUEST['bild'];
+$text=$_REQUEST['von'];
+$bild=$_REQUEST['bis'];
 
 $action=$_REQUEST['action'];
 
@@ -53,28 +55,30 @@ $table = "lebenslauf";
 $conn_id = mysqli_connect($host,$id,$pw);
 mysqli_select_db($conn_id, $database);
 
-// L�scht einen Artikel aus der Datenbank
+// Löscht einen Artikel aus der Datenbank
 if ($action == "loeschen") {
   mysqli_query($conn_id, "delete from $table where nr = '$nr'");
-  $meldung = "Der Artikel wurde gel�scht.";
+  $meldung = "Der Artikel $nr wurde gel&oumlscht.";
 
 // Aktualisiert einen Datensatz
 } elseif($action == "save") {
-  mysqli_query($conn_id, "update $table set titel = '$titel', inhalt = '$text', preis = '$preis' where nr = '$nr'");
-  $meldung = "Der Artikel wurde upgedated.";
+  mysqli_query($conn_id, "update $table set titel = '$titel', text = '$text', bild = '$bild', von = '$von', bis = '$bis' where nr = '$nr'");
+  $meldung = "Der Artikel $titel wurde upgedated.";
 
-// F�gt einen neuen Artikel hinzu
+// Fügt einen neuen Artikel hinzu
 } elseif ($action == "neu") {
-  mysqli_query($conn_id, "insert into $table (titel,inhalt,preis) VALUES ('$titel','$text','$preis')");
-  $meldung = "Der Artikel wurde hinzugef�gt.";
+  mysqli_query($conn_id, "insert into $table (titel,text,bild,von,bis) VALUES ('$titel','$text','$bild','$von','$bis')");
+  $meldung = "Der Artikel $titel wurde hinzugef&uumlgt.";
 
-// Selektiert den ausgew�hlten Artikel zum Updaten
+// Selektiert den ausgewählten Artikel zum Updaten
 } elseif ($action == "update") {
 
   $result = mysqli_query($conn_id, "select * from $table where nr = '".$nr."'");
   $titel = mysqli_result($result,0,"titel");
-  $text = mysqli_result($result,0,"inhalt");
-  $preis = mysqli_result($result,0,"preis");
+  $text = mysqli_result($result,0,"text");
+  $bild = mysqli_result($result,0,"bild");
+  $von = mysqli_result($result,0,"von");
+  $bis = mysqli_result($result,0,"bis");
 
 ?>
 <body>
@@ -89,8 +93,14 @@ if ($action == "loeschen") {
     <td>Text</td>
     <td><textarea name="inhalt"><?php echo $text ?></textarea></td>
   </tr><tr>
-    <td>Preis</td>
-    <td><textarea name="preis"><?php echo $preis ?></textarea></td>
+    <td>Bild</td>
+    <td><textarea name="preis"><?php echo $bild ?></textarea></td>
+  </tr><tr>
+    <td>Von</td>
+    <td><textarea name="preis"><?php echo $von ?></textarea></td>
+  </tr><tr>
+    <td>Bis</td>
+    <td><textarea name="preis"><?php echo $bis ?></textarea></td>
   </tr><tr>
     <td> </td>
     <TD><input type=submit value="Artikel Updaten"></form></td>
@@ -106,30 +116,35 @@ if ($action == "loeschen") {
   <table>
     <form action=<?php echo $PHP_SELF; ?> method=post>
     <input type=hidden name=action value="neu">
-  <tr>
-    <td>Titel</td>
-    <td><input type=text name="titel"></td>
-  </tr><tr>
-    <td>Text</td>
-    <td><textarea name="inhalt"></textarea></td>
-  </tr><tr>
-    <td>Preis</td>
-    <td><textarea name="preis"></textarea></td>
-  </tr><tr>
-    <td> </td>
-    <TD><input type=submit value="Neuen Artikel hinzufügen"></form></td>
-  </tr>
+    <tr>
+      <td>Titel</td>
+      <td><input type=text name="titel"></td>
+    </tr><tr>
+      <td>Text</td>
+      <td><textarea name="text"></textarea></td>
+    </tr><tr>
+      <td>Bild</td>
+      <td><textarea name="bild"></textarea></td>
+    </tr><tr>
+      <td>Von</td>
+      <td><textarea name="von"></textarea></td>
+    </tr><tr>
+      <td>Bis</td>
+      <td><textarea name="bis"></textarea></td>
+    </tr><tr>
+      <td> </td>
+      <td><input type=submit value="Neuen Artikel hinzufügen"></form></td>
+    </tr>
   </table><p>
-
 <?php
-// Gibt alle Datens�tze aus der Datenbank aus.
+// Gibt alle Datensätze aus der Datenbank aus.
 } else {
 
   echo "<ol><b>Alle Artikel in der &Uumlbersicht: </b> ";
 
   $result = mysqli_query($conn_id, "select * from $table");
   if ($num = mysqli_num_rows($result)) {
-    // Ausgabe der Datens�tze, wenn vorhanden
+    // Ausgabe der Datensätze, wenn vorhanden
     for($i=0;$i < $num; $i++) {
       $nr = mysqli_result($result,$i,"nr");
       $titel = mysqli_result($result,$i,"titel");
@@ -139,8 +154,15 @@ if ($action == "loeschen") {
       $bis = mysqli_result($result,$i,"bis");
 
 //      echo "<li> $titel - $text <A href=\"$PHP_SELF?nr=$nr&action=update\">Update</A>";
-//      echo "- <a href=\"$PHP_SELF?nr=$nr&action=loeschen\">L�schen</a></li>";
-      echo '<table><tr><td width="120">'.$von.' <br>'.$bis.'</td><td width="160">'.$titel.'</td><td width="360">' .$text. '</td><td >  <img width="300px" height="150px" src="../images/lebenslauf/'.$bild.'" /></td> <td width="100"><A href=\"$PHP_SELF?nr=$nr&action=update\">Update</A></td><td width="100"><a href=\"$PHP_SELF?nr=$nr&action=loeschen\">L&oumlschen</a></td></tr></table>';
+//      echo "- <a href=\"$PHP_SELF?nr=$nr&action=loeschen\">Löschen</a></li>";
+      echo
+      "<table><tr>
+      <td width=120>$von <br>$bis</td>
+      <td width=160>$titel</td><td width=360> $text </td>
+      <td >  <img width=300px height=150px src=../images/lebenslauf/$bild /></td>
+      <td width=100><A href=\"$PHP_SELF?nr=$nr&action=update\">Update</A></td>
+      <td width=100><a href=\"$PHP_SELF?nr=$nr&action=loeschen\">L&oumlschen</a></td>
+      </tr></table>";
     }
   } else echo "<li>Es gibt keine Datensätze in der Datenbank<p>";
   echo "</ol>";
