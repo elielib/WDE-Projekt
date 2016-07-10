@@ -15,7 +15,7 @@
 
     $sql = "SELECT ".
         "Id, Username, Nachname, Vorname ".
-      "FROM ". 
+      "FROM ".
         "user ".
       "WHERE ".
         "(Username like '".$_REQUEST["name"]."') AND ".
@@ -33,7 +33,7 @@
       $_SESSION["user_nachname"] = $data["Nachname"];
       $_SESSION["user_vorname"] = $data["Vorname"];
 
-      header ("Location: intern.php");
+      header ("Location: intern_artikel.php");
     }
     else
     {

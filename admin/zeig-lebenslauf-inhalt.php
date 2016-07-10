@@ -7,8 +7,8 @@ GLOBAL $meldung;
 $titel=$_REQUEST['titel'];
 $text=$_REQUEST['text'];
 $bild=$_REQUEST['bild'];
-$text=$_REQUEST['von'];
-$bild=$_REQUEST['bis'];
+$von=$_REQUEST['von'];
+$bis=$_REQUEST['bis'];
 
 $action=$_REQUEST['action'];
 
@@ -91,16 +91,16 @@ if ($action == "loeschen") {
     <td><input type=text name="titel" value="<?php echo $titel ?>"></td>
   </tr><tr>
     <td>Text</td>
-    <td><textarea name="inhalt"><?php echo $text ?></textarea></td>
+    <td><input type=text name="text" value=<?php echo $text ?>></td>
   </tr><tr>
     <td>Bild</td>
-    <td><textarea name="preis"><?php echo $bild ?></textarea></td>
+    <td><textarea name="bild"><?php echo $bild ?></textarea></td>
   </tr><tr>
     <td>Von</td>
-    <td><textarea name="preis"><?php echo $von ?></textarea></td>
+    <td><input type=date name="von" value=<?php echo $von ?>></td>
   </tr><tr>
     <td>Bis</td>
-    <td><textarea name="preis"><?php echo $bis ?></textarea></td>
+    <td><input type=date name="bis" value=<?php echo $bis ?>></td>
   </tr><tr>
     <td> </td>
     <TD><input type=submit value="Artikel Updaten"></form></td>
@@ -115,7 +115,7 @@ if ($action == "loeschen") {
 ?>
   <table>
     <form action=<?php echo $PHP_SELF; ?> method=post>
-    <input type=hidden name=action value="neu">
+    <input type=hidden name=action value="save">
     <tr>
       <td>Titel</td>
       <td><input type=text name="titel"></td>
@@ -142,7 +142,7 @@ if ($action == "loeschen") {
 
   echo "<ol><b>Alle Artikel in der &Uumlbersicht: </b> ";
 
-  $result = mysqli_query($conn_id, "select * from $table");
+  $result = mysqli_query($conn_id, "select * from $table order by bis desc");
   if ($num = mysqli_num_rows($result)) {
     // Ausgabe der Datensätze, wenn vorhanden
     for($i=0;$i < $num; $i++) {
@@ -150,14 +150,21 @@ if ($action == "loeschen") {
       $titel = mysqli_result($result,$i,"titel");
       $text = mysqli_result($result,$i,"text");
       $bild = mysqli_result($result,$i,"bild");
-      $von = mysqli_result($result,$i,"von");
-      $bis = mysqli_result($result,$i,"bis");
+  //    $von = mysqli_result($result,$i,"von");
+  //    $bis = mysqli_result($result,$i,"bis");
+
+      $von = strtotime(mysqli_result($result,$i,"von"));
+      $bis = strtotime(mysqli_result($result,$i,"bis"));
 
 //      echo "<li> $titel - $text <A href=\"$PHP_SELF?nr=$nr&action=update\">Update</A>";
 //      echo "- <a href=\"$PHP_SELF?nr=$nr&action=loeschen\">Löschen</a></li>";
       echo
       "<table><tr>
-      <td width=120>$von <br>$bis</td>
+      <td width=120>"
+        .date("d.m.Y", $bis).
+        "<br>"
+        .date("d.m.Y", $von).
+      "</td>
       <td width=160>$titel</td><td width=360> $text </td>
       <td >  <img width=300px height=150px src=../images/lebenslauf/$bild /></td>
       <td width=100><A href=\"$PHP_SELF?nr=$nr&action=update\">Update</A></td>

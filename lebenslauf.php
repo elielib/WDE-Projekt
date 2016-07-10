@@ -83,7 +83,7 @@ mysqli_select_db($conn_id, $database);
 	     <div id="tooplate_content"><span class="content_top"></span><!-- end of middle -->
           <?php
           // Gibt alle Datensätze aus der Datenbank aus.
-            $result = mysqli_query($conn_id, "select * from $table");
+            $result = mysqli_query($conn_id, "select * from $table order by bis desc");
             if ($num = mysqli_num_rows($result)) {
               // Ausgabe der Datensätze, wenn vorhanden
               for($i=0;$i < $num; $i++) {
@@ -131,7 +131,7 @@ mysqli_select_db($conn_id, $database);
     </div> <!-- end of content -->
 
     <div id="tooplate_footer">
-          <?php echo htmlentities($copyright);?>
+          <a href="admin/formular.php"><?php echo htmlentities($copyright);?></a>
         <div class="cleaner"></div>
       </div>
 
